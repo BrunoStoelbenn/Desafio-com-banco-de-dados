@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class Animal {
     Scanner input = new Scanner(System.in);
-    protected static int nextId = 1;
-    protected int id;
+    // protected static int nextId = 1;
+    // protected int id;
     protected float altura;
     protected float comprimento;
     protected float largura;
@@ -14,7 +14,7 @@ public class Animal {
     protected float precoVenda;
 
     public Animal() {
-        this.id = nextId++;
+        // this.id = nextId++;
     }
 
     public Animal(float altura, float comprimento, float largura, float peso) {
@@ -39,12 +39,12 @@ public class Animal {
         }
         this.peso = peso;
         this.status = "Ativo";
-        this.id = nextId++;
+        // this.id = nextId++;
     }
 
-    public int getId() {
-        return this.id;
-    }
+    // public int getId() {
+    //     return this.id;
+    // }
 
     public float getAltura(){
         return this.altura;
