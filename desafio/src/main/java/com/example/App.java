@@ -14,7 +14,7 @@ public class App
     public static void main( String[] args )
     {
         Connection conexao = AnimalDAO.estabelecerConexao();
-        AnimalDAO.createTableBovino(conexao);
+        criarTabelasAnimais(conexao);
         List<Bovino> bovinos = new ArrayList<>();
         List<Suino> suinos = new ArrayList<>();
         List<Equino> equinos = new ArrayList<>();
@@ -41,13 +41,13 @@ public class App
                     System.out.println("3. Incluir equino");
                     opcao = input.nextInt();
                     if (opcao == 1){
-                        incluirBovino(bovinos, input);
+                        incluirBovino(bovinos, input, conexao);
                     }
                     else if (opcao == 2){
-                        incluirSuino(suinos, input);
+                        incluirSuino(suinos, input, conexao);
                     }
                     else if (opcao == 3){
-                        incluirEquino(equinos, input);
+                        incluirEquino(equinos, input, conexao);
                     }
                     else{
                         System.out.println("Por favor, digite uma das 3 opções! ");
@@ -91,21 +91,21 @@ public class App
                         System.out.println();
                         System.out.println("Id do bovino: ");
                         idBovino = input.nextInt();
-                        avaliarBovino(bovinos, idBovino, input); 
+                        avaliarBovino(bovinos, idBovino, input, conexao); 
                     }
                     else if (opcao == 2){
                         relatorioSuinos(suinos);
                         System.out.println();
                         System.out.println("Id do suíno: ");
                         idSuino = input.nextInt();
-                        avaliarSuino(suinos, idSuino, input);
+                        avaliarSuino(suinos, idSuino, input, conexao);
                     }
                     else if (opcao == 3){
                         relatorioEquinos(equinos);
                         System.out.println();
                         System.out.println("Id do equino: ");
                         idEquino = input.nextInt();
-                        avaliarEquino(equinos, idEquino, input);
+                        avaliarEquino(equinos, idEquino, input, conexao);
                     }
                     else{
                         System.out.println("Por favor, digite uma das 3 opções! ");
@@ -123,21 +123,21 @@ public class App
                         System.out.println("");
                         System.out.println("Id do bovino: ");
                         idBovino = input.nextInt();
-                        totalVendasBovinos = registrarVendaBovino(bovinos, idBovino, input, totalVendasBovinos); 
+                        totalVendasBovinos = registrarVendaBovino(bovinos, idBovino, input, totalVendasBovinos, conexao); 
                     }
                     else if (opcao == 2){
                         relatorioSuinos(suinos);
                         System.out.println("");
                         System.out.println("Id do suino: ");
                         idSuino = input.nextInt();
-                        totalVendasSuinos = registrarVendaSuino(suinos, idSuino, input, totalVendasSuinos); 
+                        totalVendasSuinos = registrarVendaSuino(suinos, idSuino, input, totalVendasSuinos, conexao); 
                     }
                     else if (opcao == 3){
                         relatorioEquinos(equinos);
                         System.out.println("");
                         System.out.println("Id do equino: ");
                         idEquino = input.nextInt();
-                        totalVendasEquinos = registrarVendaEquino(equinos, idEquino, input, totalVendasEquinos); 
+                        totalVendasEquinos = registrarVendaEquino(equinos, idEquino, input, totalVendasEquinos, conexao); 
                     }
                     else{
                         System.out.println("Por favor, digite uma das 3 opções! ");
@@ -155,21 +155,21 @@ public class App
                         System.out.println("");
                         System.out.println("Id do bovino: ");
                         idBovino = input.nextInt();
-                        totalPerdasBovinos = registrarPerdaBovino(bovinos, idBovino, totalPerdasBovinos); 
+                        totalPerdasBovinos = registrarPerdaBovino(bovinos, idBovino, totalPerdasBovinos, conexao); 
                     }
                     else if (opcao == 2){
                         relatorioSuinos(suinos);
                         System.out.println("");
                         System.out.println("Id do suino: ");
                         idSuino = input.nextInt();
-                        totalPerdasSuinos = registrarPerdaSuino(suinos, idSuino, totalPerdasSuinos); 
+                        totalPerdasSuinos = registrarPerdaSuino(suinos, idSuino, totalPerdasSuinos, conexao); 
                     }
                     else if (opcao == 3){
                         relatorioEquinos(equinos);
                         System.out.println("");
                         System.out.println("Id do equino: ");
                         idEquino = input.nextInt();
-                        totalPerdasEquinos = registrarPerdaEquino(equinos, idEquino, totalPerdasEquinos); 
+                        totalPerdasEquinos = registrarPerdaEquino(equinos, idEquino, totalPerdasEquinos, conexao); 
                     }
                     else{
                         System.out.println("Por favor, digite uma das 3 opções! ");
@@ -262,7 +262,7 @@ public class App
         System.out.println("9. Sair");
     }
 
-    public static void incluirBovino(List<Bovino> bovinos, Scanner input){
+    public static void incluirBovino(List<Bovino> bovinos, Scanner input, Connection connection){
         System.out.println("Quantos bovinos você deseja adicionar? ");
         int adicionar = input.nextInt();
         System.out.println("");
@@ -279,11 +279,12 @@ public class App
             System.out.println();
             Bovino bovino = new Bovino(altura, comprimento, largura, peso);
             bovinos.add(bovino);
+            AnimalDAO.adicionarBovinoDAO(bovino, connection);
         }
         
     }
 
-    public static void incluirSuino(List<Suino> suinos, Scanner input){
+    public static void incluirSuino(List<Suino> suinos, Scanner input, Connection connection){
         System.out.println("Quantos suínos você deseja adicionar? ");
         int adicionar = input.nextInt();
         System.out.println("");
@@ -300,11 +301,12 @@ public class App
             System.out.println();
             Suino suino = new Suino(altura, comprimento, largura, peso);
             suinos.add(suino);
+            AnimalDAO.adicionarSuinoDAO(suino, connection);
         }
 
     }
 
-    public static void incluirEquino(List<Equino> equinos, Scanner input){
+    public static void incluirEquino(List<Equino> equinos, Scanner input, Connection connection){
         System.out.println("Quantos equinos você deseja adicionar? ");
         int adicionar = input.nextInt();
         System.out.println("");
@@ -321,6 +323,7 @@ public class App
             System.out.println();
             Equino equino = new Equino(altura, comprimento, largura, peso);
             equinos.add(equino);
+            AnimalDAO.adicionarEquinoDAO(equino, connection);
         }
 
     }
@@ -385,7 +388,7 @@ public class App
         }
     }
 
-    public static void avaliarBovino(List<Bovino> bovinos, int id, Scanner input){
+    public static void avaliarBovino(List<Bovino> bovinos, int id, Scanner input, Connection connection){
         System.out.println();
         System.out.println("Nova altura: ");
         float novaAltura = input.nextFloat();
@@ -400,9 +403,10 @@ public class App
                 bovino.avaliar(novaAltura, novoComprimento, novaLargura, novoPeso);
             }
         }
+        AnimalDAO.avaliarBovinoDAO(id, novaAltura, novoComprimento, novaLargura, novoPeso, connection);
     }
 
-    public static void avaliarSuino(List<Suino> suinos, int id, Scanner input){
+    public static void avaliarSuino(List<Suino> suinos, int id, Scanner input, Connection connection){
         System.out.println();
         System.out.println("Nova altura: ");
         float novaAltura = input.nextFloat();
@@ -417,9 +421,10 @@ public class App
                 suino.avaliar(novaAltura, novoComprimento, novaLargura, novoPeso);
             }
         }
+        AnimalDAO.avaliarSuinoDAO(id, novaAltura, novoComprimento, novaLargura, novoPeso, connection);
     }
 
-    public static void avaliarEquino(List<Equino> equinos, int id, Scanner input){
+    public static void avaliarEquino(List<Equino> equinos, int id, Scanner input, Connection connection){
         System.out.println();
         System.out.println("Nova altura: ");
         float novaAltura = input.nextFloat();
@@ -434,9 +439,10 @@ public class App
                 equino.avaliar(novaAltura, novoComprimento, novaLargura, novoPeso);
             }
         }
+        AnimalDAO.avaliarEquinoDAO(id, novaAltura, novoComprimento, novaLargura, novoPeso, connection);
     }
 
-    public static float registrarVendaBovino(List<Bovino> bovinos, int id, Scanner input, float totalVendasBovinos){
+    public static float registrarVendaBovino(List<Bovino> bovinos, int id, Scanner input, float totalVendasBovinos, Connection connection){
         System.out.println();
         for (Bovino bovino : bovinos) {
             if (bovino.getId() == id) {
@@ -444,6 +450,7 @@ public class App
                     bovino.setStatus("Vendido");
                     System.out.println("Valor da venda: ");
                     float precoVenda = input.nextFloat();
+                    AnimalDAO.registrarVendaBovinoDAO(id, "Vendido", precoVenda, connection);
                     bovino.setPrecoVenda(precoVenda);
                     totalVendasBovinos += precoVenda;
                     return totalVendasBovinos;
@@ -457,7 +464,7 @@ public class App
         return totalVendasBovinos;
     }
 
-    public static float registrarVendaSuino(List<Suino> suinos, int id, Scanner input, float totalVendasSuinos){
+    public static float registrarVendaSuino(List<Suino> suinos, int id, Scanner input, float totalVendasSuinos, Connection connection){
         System.out.println();
         for (Suino suino : suinos) {
             if (suino.getId() == id) {
@@ -465,6 +472,7 @@ public class App
                     suino.setStatus("Vendido");
                     System.out.println("Valor da venda: ");
                     float precoVenda = input.nextFloat();
+                    AnimalDAO.registrarVendaSuinoDAO(id, "Vendido", precoVenda, connection);
                     suino.setPrecoVenda(precoVenda);
                     totalVendasSuinos += precoVenda;
                     return totalVendasSuinos;
@@ -478,7 +486,7 @@ public class App
         return totalVendasSuinos;
     }
 
-    public static float registrarVendaEquino(List<Equino> equinos, int id, Scanner input, float totalVendasEquinos){
+    public static float registrarVendaEquino(List<Equino> equinos, int id, Scanner input, float totalVendasEquinos, Connection connection){
         System.out.println();
         for (Equino equino : equinos) {
             if (equino.getId() == id) {
@@ -486,6 +494,7 @@ public class App
                     equino.setStatus("Vendido");
                     System.out.println("Valor da venda: ");
                     float precoVenda = input.nextFloat();
+                    AnimalDAO.registrarVendaEquinoDAO(id, "Vendido", precoVenda, connection);
                     equino.setPrecoVenda(precoVenda);
                     totalVendasEquinos += precoVenda;
                     return totalVendasEquinos;
@@ -499,12 +508,13 @@ public class App
         return totalVendasEquinos;
     }
 
-    public static int registrarPerdaBovino(List<Bovino> bovinos, int id, int totalPerdasBovinos){
+    public static int registrarPerdaBovino(List<Bovino> bovinos, int id, int totalPerdasBovinos, Connection connection){
         System.out.println();
         for (Bovino bovino : bovinos) {
             if (bovino.getId() == id) {
                 if(bovino != null && bovino.getStatus().equals("Ativo")){
                     bovino.setStatus("Perdido");
+                    AnimalDAO.registrarPerdaBovinoDAO(id, "Perdido", 0, connection);
                     totalPerdasBovinos += 1;
                     return totalPerdasBovinos;
                 }
@@ -517,12 +527,13 @@ public class App
         return totalPerdasBovinos;
     }
 
-    public static int registrarPerdaSuino(List<Suino> suinos, int id, int totalPerdasSuinos){
+    public static int registrarPerdaSuino(List<Suino> suinos, int id, int totalPerdasSuinos, Connection connection){
         System.out.println();
         for (Suino suino : suinos) {
             if (suino.getId() == id) {
                 if(suino != null && suino.getStatus().equals("Ativo")){
                     suino.setStatus("Perdido");
+                    AnimalDAO.registrarPerdaSuinoDAO(id, "Perdido", 0, connection);
                     totalPerdasSuinos += 1;
                     return totalPerdasSuinos;
                 }
@@ -535,12 +546,13 @@ public class App
         return totalPerdasSuinos;
     }
 
-    public static int registrarPerdaEquino(List<Equino> equinos, int id, int totalPerdasEquinos){
+    public static int registrarPerdaEquino(List<Equino> equinos, int id, int totalPerdasEquinos, Connection connection){
         System.out.println();
         for (Equino equino : equinos) {
             if (equino.getId() == id) {
                 if(equino != null && equino.getStatus().equals("Ativo")){
                     equino.setStatus("Perdido");
+                    AnimalDAO.registrarPerdaEquinoDAO(id, "Perdido", 0, connection);
                     totalPerdasEquinos += 1;
                     return totalPerdasEquinos;
                 }
@@ -611,5 +623,11 @@ public class App
             }
         }
         System.out.println("Total perdas equinos: " + totalPerdasEquinos);
+    }
+
+    public static void criarTabelasAnimais(Connection connection){
+        AnimalDAO.createTableBovino(connection);
+        AnimalDAO.createTableSuino(connection);
+        AnimalDAO.createTableEquino(connection);
     }
 }
